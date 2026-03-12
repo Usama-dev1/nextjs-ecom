@@ -19,7 +19,13 @@ const PAYMENT_METHODS = [
     desc: "Pay with your stripe credit card",
   },
 ];
-export function RadioGroupChoiceCard({ value, onChange }) {
+export function RadioGroupChoiceCard({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+}) {
   return (
     <RadioGroup value={value} onValueChange={onChange} className="max-w-sm">
       {PAYMENT_METHODS.map((method) => (
