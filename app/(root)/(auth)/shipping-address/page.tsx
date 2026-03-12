@@ -1,9 +1,14 @@
 import { ShippingForm } from "./components/shipping-form";
+import { ShippingAddress } from "@/types";
 import { getSessionAction } from "@/lib/actions/auth.action";
 import { redirect } from "next/navigation";
 import CheckOutSteps from "@/components/checkout-steps";
 import prisma from "@/lib/prisma";
-const page = async ({ searchParams }) => {
+const page = async({
+  searchParams,
+}: {
+  searchParams: Promise<{ redirect?: string }>;
+}) => {
   const { redirect: redirectTo } = await searchParams;
   const session = await getSessionAction();
   if (!session?.success) redirect("/login");
@@ -21,7 +26,7 @@ const page = async ({ searchParams }) => {
     <div className="w-full px-6 md:px-10">
       <CheckOutSteps current={0} />
       <ShippingForm
-        savedAddress={user?.shippingAddress ?? null}
+        savedAddress={(user?.shippingAddress as ShippingAddress) ?? null}
         redirectTo={redirectTo ?? "/payment-method"}
         orderId={orderId}
       />

@@ -34,22 +34,22 @@ export function RegisterForm({
   const [showPassword, setPassword] = useState(false);
 const { fetchSession, refreshCart } = useSession();
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
-  setError("")
-  const result = await registerAction(data)
-  
+  e.preventDefault();
+  setError("");
+  const result = await registerAction(data);
+
   if (result?.data) {
-    setData({ name: "", email: "", password: "" })
-    await fetchSession(); 
+    setData({ name: "", email: "", password: "" });
+    await fetchSession();
     await refreshCart();
-    router.push("/")
+    router.push("/");
   } else {
-    setError(result?.message ?? "Something went wrong")
+    setError(result?.message ?? "Something went wrong");
   }
-}
+};
 
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };

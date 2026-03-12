@@ -28,11 +28,11 @@ export function LoginForm({
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { fetchSession } = useSession();
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     try {

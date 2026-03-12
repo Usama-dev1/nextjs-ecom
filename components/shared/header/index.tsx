@@ -5,11 +5,7 @@ import logo from "@/public/images/logo.svg";
 import { APP_TITLE } from "@/lib/constants";
 import dynamic from "next/dynamic";
 
-const Menu = dynamic(
-  () =>
-    new Promise((resolve) => {
-      setTimeout(() => resolve(import("./menu")), 10);
-    }),
+const Menu = dynamic(() => import("./menu"),
   { ssr: false, loading: () => <div>Loading menu...</div> }
 );
 const Header = () => {

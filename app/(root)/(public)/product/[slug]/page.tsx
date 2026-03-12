@@ -15,6 +15,7 @@ export default async function ProductPage({ params }: PageProps) {
   const product = await getProductById(slug);
   if (!product) return notFound();
   // fetch cart and find matching item
+  const images = product.images as string[];
   const cartItem = await getCartItem(product.id);
 
   return (
@@ -22,7 +23,7 @@ export default async function ProductPage({ params }: PageProps) {
       <section>
         <div className="grid grid-cols-1 md:grid-cols-5 items-start">
           <div className="col-span-2">
-            <ProductImages images={product.images} />
+            <ProductImages images={images} />
           </div>
           <div className="col-span-2 p-5">
             <div className="flex flex-col mx-2">
@@ -59,7 +60,7 @@ export default async function ProductPage({ params }: PageProps) {
                   <div>Status</div>
                   {product.stock > 0 ? (
                     <Badge
-                      variant="outline "
+                      variant="outline"
                       className="bg-green-200 animate-pulse">
                       In Stock
                     </Badge>
@@ -75,9 +76,9 @@ export default async function ProductPage({ params }: PageProps) {
                         name: product.name,
                         id: product.id,
                         price: Number(product.price),
-                        image: product.images[0],
+                        image: images[0],
                         qty: 1,
-                        slug:product.slug,
+                        slug: product.slug,
                         stock: product.stock,
                       }}
                       cartItem={cartItem ?? null}

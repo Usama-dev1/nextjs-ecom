@@ -9,9 +9,16 @@ export const getLatestProducts = async () => {
       take: 10,
     });
 
-    return products;
-  } catch (error: any) {
-    throw new Error("Failed to fetch products: " + error.message);
+  return products.map((p) => ({
+    ...p,
+    price: Number(p.price),
+    rating: Number(p.rating),
+    description: p.description ?? "",
+    banner: p.banner ?? "",
+    images: p.images as string[],
+  }));
+  } catch (error) {
+    throw new Error("Failed to fetch products: " + error);
   }
 };
 
@@ -21,7 +28,7 @@ export const getProductById = async (slug: string) => {
       where: { slug },
     });
     return product;
-  } catch (error: any) {
-    throw new Error("Failed to fetch product: " + error.message);
+  } catch (error) {
+    throw new Error("Failed to fetch product: " + error);
   }
 };

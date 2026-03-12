@@ -2,9 +2,9 @@
 import { useEffect, createContext, useState, useCallback } from "react";
 import { getSessionAction } from "../../actions/auth.action";
 import { cartItemQty } from "@/lib/actions/cart.action";
-
+import { SessionResult } from "@/types";
 type SessionContextType = {
-  data: object;
+  data: SessionResult | null;
   loading: boolean;
   error: string;
   cartQty: number;
@@ -23,10 +23,10 @@ export const SessionProvider = ({
   const [cartQty, setCartQty] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-const refreshCart = useCallback(async () => {
-  const qty = await cartItemQty();
-  setCartQty(qty ?? 0);
-}, []);
+  const refreshCart = useCallback(async () => {
+    const qty = await cartItemQty();
+    setCartQty(qty ?? 0);
+  }, []);
   const fetchSession = useCallback(async () => {
     try {
       setLoading(true);
@@ -47,11 +47,11 @@ const refreshCart = useCallback(async () => {
   }, []);
   useEffect(() => {
     fetchSession();
-    refreshCart()
+    refreshCart();
   }, []);
   return (
     <SessionContext.Provider
-      value={{ data, loading, error, fetchSession, cartQty,refreshCart }}>
+      value={{ data, loading, error, fetchSession, cartQty, refreshCart }}>
       {children}
     </SessionContext.Provider>
   );

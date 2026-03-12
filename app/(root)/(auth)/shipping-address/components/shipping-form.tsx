@@ -17,12 +17,12 @@ import { shippingAddressAction } from "@/lib/actions/user.actions";
 export function ShippingForm({
   savedAddress,
   orderId,
-  redirectTo
+  redirectTo,
 }: {
   savedAddress: ShippingAddress | null;
-  orderId?: string 
-})
- {
+  orderId?: string;
+  redirectTo: string;
+}) {
   const router = useRouter();
 
   const [data, setData] = useState<ShippingAddress>({
@@ -32,44 +32,36 @@ export function ShippingForm({
     phoneNo: savedAddress?.phoneNo || 123,
     postalCode: savedAddress?.postalCode || "",
     country: savedAddress?.country || "",
-  })
+  });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-
-
-  const handleSubmit = async (e: React.FormEvent) =>
-     {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const result = await shippingAddressAction(data,orderId);
+      const result = await shippingAddressAction(data, orderId);
 
       if (!result.success) {
         setError(result.message || "Failed to save address");
         return;
       }
 
-       router.push(redirectTo); 
-    } catch (err) {
+      router.push(redirectTo);
+    } catch  {
       setError("Something went wrong");
     } finally {
       setLoading(false);
     }
-  }
-  
-
-
-
-
+  };
 
   return (
     <div className="w-full max-w-xl mx-auto py-2 px-3 sm:px-0">

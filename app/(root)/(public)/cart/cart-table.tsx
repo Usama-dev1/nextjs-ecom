@@ -24,12 +24,30 @@ import { formatCurrency } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth/useSession";
-const CartTable = ({ cart }) => {
+
+type Cart = {
+  id: string;
+  items: {
+    productId: string;
+    name: string;
+    slug: string;
+    image: string;
+    price: number;
+    qty: number;
+    stock: number;
+  }[];
+  itemsPrice: number;
+  taxPrice: number;
+  shippingPrice: number;
+  totalPrice: number;
+};
+
+const CartTable = ({ cart }: { cart: Cart }) => {
   const { items } = cart;
   const [isPending, setIsPending] = useState(false);
-  const { fetchSession, refreshCart } = useSession();
+  const { refreshCart } = useSession();
   const router = useRouter();
-  const handleAdd = async (item) => {
+  const handleAdd = async (item: Cart["items"][number]) => {
     setIsPending(true);
     try {
       const res = await addItemToCart({
@@ -52,7 +70,7 @@ const CartTable = ({ cart }) => {
       setIsPending(false);
     }
   };
-  const handleDeleteItem = async (item) => {
+  const handleDeleteItem = async (item: Cart["items"][number]) => {
     setIsPending(true);
     try {
       const res = await deleteCartItem(item.productId, true);
@@ -72,7 +90,7 @@ const CartTable = ({ cart }) => {
     }
   };
 
-  const handleRemove = async (item) => {
+  const handleRemove = async (item: Cart["items"][number]) => {
     setIsPending(true);
     try {
       const res = await deleteCartItem(item.productId);
