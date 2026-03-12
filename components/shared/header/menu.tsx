@@ -1,7 +1,22 @@
 "use client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import ModeToggle from "./mode-toggle";
-import { EllipsisVertical, ShoppingCart, UserIcon } from "lucide-react";
+import {
+  EllipsisVertical,
+  ShoppingCart,
+  UserIcon,
+  LogOut,
+  ShoppingBag,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import {
   Sheet,
@@ -49,21 +64,46 @@ const Menu = () => {
           </Link>
         </Button>
         {data?.success ? (
-          <div className="flex items-center gap-3">
-            <div className="flex flex-col text-sm">
-              <span className="font-medium">{data?.user?.name}</span>
-              <span className="text-muted-foreground !text-xs">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2">
+                <UserIcon className="w-4 h-4" />
+                <span className="text-sm font-medium">{data?.user?.name}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuLabel className="text-xs text-muted-foreground">
                 {data?.user?.email}
-              </span>
-            </div>
-            <Button
-              size="sm"
-              className="px-4 py-1 text-xs"
-              onClick={handleLogout}>
-              <UserIcon className="w-2 h-2 text-background" />
-              <span className=" text-xxs text-background ">Logout</span>
-            </Button>
-          </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-2 cursor-pointer">
+                  <User className="w-4 h-4" />
+                  Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/orders"
+                  className="flex items-center gap-2 cursor-pointer">
+                  <ShoppingBag className="w-4 h-4" />
+                  My Orders
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="flex items-center gap-2 text-red-500 cursor-pointer focus:text-red-500">
+                <LogOut className="w-4 h-4" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : (
           <Button asChild>
             <Link href="/register">
