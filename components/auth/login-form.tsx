@@ -42,8 +42,8 @@ export function LoginForm({
         return;
       }
       await fetchSession(); // wait for session
-      router.push("/");
       router.refresh(); // ← add this back
+      router.push("/");
     } catch (error) {
       console.error("[login component]:failed to login", error);
       setError("Login Failed");
