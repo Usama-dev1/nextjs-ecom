@@ -19,7 +19,7 @@ export const SessionProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState(null);
   const [cartQty, setCartQty] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -32,15 +32,14 @@ export const SessionProvider = ({
       setLoading(true);
       setError("");
       const user = await getSessionAction();
-      if (!user?.success) {
-        setData(null);
-        setError("user not found");
-      } else {
+      if (user?.success === true) {
         setData(user);
+      } else {
+        setData(null); // only clear if explicitly not logged in
       }
     } catch (err) {
-      setError("something failed");
       console.error(err);
+      // don't clear data on error — keep existing session
     } finally {
       setLoading(false);
     }

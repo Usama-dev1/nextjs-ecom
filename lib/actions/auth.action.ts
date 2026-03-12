@@ -120,12 +120,8 @@ export const getSessionAction = async (): Promise<SessionResult | null> => {
       await prisma.session.delete({ where: { id: sessionId } });
       return { success: false, message: "Please login again" };
     }
-    // validate against schema before returning
-    const parsed = userSchema.safeParse(userSession.user);
-     console.log("parsed:", parsed); 
-    if (!parsed.success) return null;
-
-    return { success: true, user: parsed.data };
+const { password, ...safeUser } = userSession.user;
+return { success: true, user: safeUser };
   } catch (error) {
     console.error("[getSessionAction]: cant get session", error);
     return { success: false, message: "Failed to get session" };
