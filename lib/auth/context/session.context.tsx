@@ -21,7 +21,7 @@ export const SessionProvider = ({
 }) => {
   const [data, setData] = useState(null);
   const [cartQty, setCartQty] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const refreshCart = useCallback(async () => {
     const qty = await cartItemQty();
